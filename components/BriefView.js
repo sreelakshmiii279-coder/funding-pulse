@@ -1,4 +1,5 @@
 import { marked } from 'marked';
+import { dateOnly } from '@/lib/db';
 
 // Brief markdown comes from our own code (deal lines, links) and Gemini
 // (prose). Raw HTML is escaped and only http(s) links are rendered.
@@ -17,7 +18,7 @@ export default function BriefView({ brief }) {
   return (
     <article className="card brief">
       <div className="meta">
-        <span className="pill">Week of {new Date(brief.week_start).toISOString().slice(0, 10)}</span>
+        <span className="pill">Week of {dateOnly(brief.week_start)}</span>
         <span className="pill">{brief.deals_count} deals</span>
         <span className="pill">
           {brief.sources_scanned} sources · {brief.sources_failed} failed

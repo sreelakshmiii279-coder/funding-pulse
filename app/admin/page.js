@@ -1,5 +1,5 @@
 import { redirect } from 'next/navigation';
-import { query } from '@/lib/db';
+import { query, dateOnly } from '@/lib/db';
 import { isAdmin } from '@/lib/auth';
 import RunNow from './RunNow';
 
@@ -77,7 +77,7 @@ export default async function AdminPage() {
               <tbody>
                 {briefs.map((b) => (
                   <tr key={b.id}>
-                    <td><a href={`/briefs/${b.id}`}>{new Date(b.week_start).toISOString().slice(0, 10)}</a></td>
+                    <td><a href={`/briefs/${b.id}`}>{dateOnly(b.week_start)}</a></td>
                     <td>{b.deals_count}</td>
                     <td>{b.sources_scanned} ({b.sources_failed})</td>
                     <td>{ist(b.created_at)}</td>
