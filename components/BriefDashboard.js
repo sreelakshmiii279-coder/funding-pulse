@@ -12,6 +12,7 @@ const I = {
   chart: 'M3 3v18h18M7 15l4-4 3 3 5-6',
   star: 'M12 3l2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1L3.2 9.5l6.1-.9L12 3z',
   list: 'M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01',
+  users: 'M16 21v-2a4 4 0 00-4-4H6a4 4 0 00-4 4v2M9 11a4 4 0 100-8 4 4 0 000 8zM22 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75',
 };
 const Icon = ({ d, size = 16 }) => (
   <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d={d} /></svg>
@@ -103,6 +104,121 @@ function Alerts({ data, config }) {
   );
 }
 
+const DIRECTION = {
+  up: { label: 'Above average', cls: 'up', arrow: '▲' },
+  down: { label: 'Below average', cls: 'down', arrow: '▼' },
+  steady: { label: 'In line', cls: 'steady', arrow: '—' },
+};
+
+// "Is deal activity in a space his portfolio touches accelerating or
+// cooling?" Direction is computed in code (lib/match.js), not by Gemini.
+function Trends({ stats, colorOf }) {
+  const t = stats.sector_trends;
+  const n = stats.overall_4wk_avg?.weeks || 4;
+  return (
+    <section className="card">
+      <div className="card-title">
+        <h2><SecIcon d={I.chart} tone="var(--t-amber)" />Your sectors vs recent average</h2>
+        <span className="hint">Deals per week</span>
+      </div>
+      {!t ? (
+        <p className="muted">
+          Comparisons start once 3 earlier weeks are stored (currently {stats.prior_weeks}). Until then the brief only
+          describes this week.
+        </p>
+      ) : (
+        <>
+          {stats.overall_4wk_avg && (
+            <p className="trend-overall">
+              <strong className="num">{stats.total_deals}</strong> deals this week vs{' '}
+              <strong className="num">{stats.overall_4wk_avg.avg_deals}</strong> a week on average over the previous{' '}
+              {stats.overall_4wk_avg.weeks} weeks.
+            </p>
+          )}
+          <div className="scroll"><table className="table trend-table">
+            <thead>
+              <tr><th>Sector</th><th className="right">This week</th><th className="right">{n}-wk avg</th><th>Direction</th></tr>
+            </thead>
+            <tbody>
+              {t.map((r) => {
+                const d = DIRECTION[r.direction];
+                return (
+                  <tr key={r.sector}>
+                    <td>
+                      <span className="tag-chip" style={{ '--tone': colorOf(r.sector) }}><i />{r.sector}</span>
+                      {r.portfolio && <span className="pill accent" style={{ marginLeft: 6 }}>portfolio</span>}
+                    </td>
+                    <td className="right num"><strong>{r.this_week}</strong></td>
+                    <td className="right num muted">{r.avg_4wk}</td>
+                    <td><span className={`trend ${d.cls}`}>{d.arrow} {d.label}</span></td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table></div>
+          <p className="note">
+            “Above/below” needs at least 1.5× (or 0.5×) the average and a gap of 2+ deals.
+            {stats.backfilled_weeks?.length > 0 &&
+              ` Earlier weeks (${stats.backfilled_weeks.join(', ')}) were backfilled from Google News archives, which can miss a few deals the live RSS feeds catch.`}
+          </p>
+        </>
+      )}
+    </section>
+  );
+}
+
+// "Has a new investor started making moves in his target verticals?"
+function Investors({ inv }) {
+  if (!inv) return null;
+  return (
+    <section className="card">
+      <div className="card-title">
+        <h2><SecIcon d={I.users} tone="var(--t-violet)" />Investor activity</h2>
+        <span className="hint">{inv.investors_this_week} investors named this week</span>
+      </div>
+      <div className="subhead" style={{ marginTop: 0 }}>Most active this week</div>
+      {inv.most_active.length ? (
+        <ul className="inv-list">
+          {inv.most_active.map((i) => (
+            <li key={i.name}>
+              <div>
+                <strong>{i.name}</strong>
+                <div className="muted inv-sub">{i.companies.join(', ')}</div>
+              </div>
+              <span className="pill num">{i.deals} deal{i.deals === 1 ? '' : 's'}{i.leads ? ` · ${i.leads} led` : ''}</span>
+            </li>
+          ))}
+        </ul>
+      ) : (
+        <p className="muted">No investor appeared in more than one deal.</p>
+      )}
+
+      <div className="subhead">New to your sectors</div>
+      {inv.new_in_focus === null ? (
+        <p className="muted">Shown once 3 earlier weeks are stored, so “new” means something.</p>
+      ) : inv.new_in_focus.length ? (
+        <ul className="inv-list">
+          {inv.new_in_focus.slice(0, 8).map((n, k) => (
+            <li key={`${n.investor}-${k}`}>
+              <div>
+                <strong>{n.investor}</strong> <span className="muted">→ {n.sector}</span>
+                <div className="muted inv-sub">
+                  {n.lead ? 'Led' : 'Joined'} {n.company} ({n.amount_text || 'undisclosed'})
+                  {n.first_time_seen ? ' · not seen in any sector before' : ''}
+                </div>
+              </div>
+              <SourceLink d={n} />
+            </li>
+          ))}
+        </ul>
+      ) : (
+        <p className="muted">Every investor in your sectors this week has backed deals there before.</p>
+      )}
+      <p className="note">“New” = first time in our stored history (4 weeks), not first time ever.</p>
+    </section>
+  );
+}
+
 export default function BriefDashboard({ brief, config }) {
   const data = brief.data;
   const s = data.stats;
@@ -170,6 +286,11 @@ export default function BriefDashboard({ brief, config }) {
             <span>Stages shade light → dark from pre-seed to late stage</span>
           </div>
         </section>
+      </div>
+
+      <div className="grid-2 stack">
+        <Trends stats={s} colorOf={colorOf} />
+        <Investors inv={data.investors} />
       </div>
 
       <section className="card">
