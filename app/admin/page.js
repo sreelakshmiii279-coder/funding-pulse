@@ -1,60 +1,79 @@
 import { redirect } from 'next/navigation';
 import { query, dateOnly } from '@/lib/db';
 import { isAdmin } from '@/lib/auth';
+import { weekRange, istDateTime } from '@/lib/format';
 import RunNow from './RunNow';
 
 export const dynamic = 'force-dynamic';
 
-const ist = (d) => (d ? new Date(d).toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' }) : '-');
+const STEP_ORDER = ['collect', 'extract', 'match', 'brief', 'email'];
+const secs = (ms) => `${(ms / 1000).toFixed(ms < 10000 ? 1 : 0)}s`;
 
 export default async function AdminPage() {
   if (!(await isAdmin())) redirect('/login?next=/admin');
 
-  const [lastRun] = await query('SELECT * FROM runs ORDER BY started_at DESC LIMIT 1');
-  const briefs = await query(
-    'SELECT id, week_start, deals_count, sources_scanned, sources_failed, created_at FROM briefs ORDER BY created_at DESC LIMIT 30'
-  );
-  const [{ pending }] = await query('SELECT count(*)::int AS pending FROM manual_submissions WHERE processed = false');
+  const [[lastRun], briefs, [{ pending }]] = await Promise.all([
+    query('SELECT * FROM runs ORDER BY started_at DESC LIMIT 1'),
+    query('SELECT id, week_start, deals_count, sources_scanned, sources_failed, created_at FROM briefs ORDER BY created_at DESC LIMIT 30'),
+    query('SELECT count(*)::int AS pending FROM manual_submissions WHERE processed = false'),
+  ]);
+  const sources = lastRun?.source_status || [];
+  const failed = sources.filter((s) => !s.ok).length;
 
   return (
-    <>
+    <main className="page">
+      <div className="page-head">
+        <div>
+          <h1>Admin</h1>
+          <p>Runs automatically every Monday at 6:00 AM IST.</p>
+        </div>
+        <span className="pill accent">
+          {pending} Telegram forward{pending === 1 ? '' : 's'} waiting
+        </span>
+      </div>
+
       <section className="card">
-        <h1 style={{ marginTop: 0, fontSize: 22 }}>Admin</h1>
-        <p className="muted">
-          Runs automatically every Monday 6:00 AM IST. {pending} Telegram submission{pending === 1 ? '' : 's'} waiting.
-        </p>
+        <div className="card-title">
+          <h2>Run the pipeline now</h2>
+          <span className="hint">Collect → extract → write → email</span>
+        </div>
         <RunNow />
       </section>
 
       <section className="card">
-        <h2 style={{ marginTop: 0, fontSize: 18 }}>Last run</h2>
+        <div className="card-title">
+          <h2>Last run</h2>
+          {lastRun && <span className="hint">#{lastRun.id} · {lastRun.trigger} · {istDateTime(lastRun.started_at)} IST</span>}
+        </div>
         {!lastRun ? (
           <p className="muted">No runs yet.</p>
         ) : (
           <>
-            <p>
-              #{lastRun.id} · {lastRun.trigger} · started {ist(lastRun.started_at)} ·{' '}
-              <span className={lastRun.status === 'ok' ? 'ok' : lastRun.status === 'error' ? 'fail' : ''}>{lastRun.status}</span>
-              {lastRun.timings && Object.keys(lastRun.timings).length > 0 && (
-                <span className="muted">
-                  {' '}· {Object.entries(lastRun.timings).map(([k, v]) => `${k.replace('_ms', '')} ${(v / 1000).toFixed(1)}s`).join(', ')}
-                </span>
-              )}
-            </p>
-            {lastRun.error && <p className="fail">{lastRun.error}</p>}
+            <div className="kv">
+              <span className={`pill ${lastRun.status === 'ok' ? 'ok' : lastRun.status === 'error' ? 'fail' : 'warn'}`}>
+                <span className="dot" /> {lastRun.status}
+              </span>
+              <span className={`pill ${failed ? 'warn' : ''}`}>{sources.length} sources, {failed} failed</span>
+              {STEP_ORDER.filter((k) => lastRun.timings?.[`${k}_ms`] != null).map((k) => (
+                <span key={k} className="pill num">{k} {secs(lastRun.timings[`${k}_ms`])}</span>
+              ))}
+            </div>
+            {lastRun.error && <p className="notice fail">{lastRun.error}</p>}
             <div className="scroll">
-              <table>
+              <table className="table">
                 <thead>
-                  <tr><th>Source</th><th>Type</th><th>Status</th><th>Items</th><th>Last 7 days</th></tr>
+                  <tr><th>Source</th><th>Type</th><th>Status</th><th className="right">Items</th><th className="right">Last 7 days</th></tr>
                 </thead>
                 <tbody>
-                  {lastRun.source_status.map((s) => (
+                  {sources.map((s) => (
                     <tr key={s.name}>
-                      <td>{s.name}</td>
-                      <td className="muted">{s.origin === 'rss' ? 'RSS' : 'Google News'}</td>
-                      <td className={s.ok ? 'ok' : 'fail'} title={s.error || ''}>{s.ok ? 'ok' : 'failed'}</td>
-                      <td>{s.items}</td>
-                      <td>{s.fresh ?? '-'}</td>
+                      <td>{s.name.replace(/^GN: /, '')}</td>
+                      <td className="muted">{s.origin === 'rss' ? 'RSS feed' : 'Google News'}</td>
+                      <td title={s.error || ''}>
+                        <span className={s.ok ? 'ok' : 'fail'}><span className="dot" /> {s.ok ? 'OK' : 'Failed'}</span>
+                      </td>
+                      <td className="right num">{s.items}</td>
+                      <td className="right num">{s.fresh ?? '—'}</td>
                     </tr>
                   ))}
                 </tbody>
@@ -65,22 +84,22 @@ export default async function AdminPage() {
       </section>
 
       <section className="card">
-        <h2 style={{ marginTop: 0, fontSize: 18 }}>Past briefs</h2>
+        <div className="card-title"><h2>Past briefs</h2></div>
         {!briefs.length ? (
           <p className="muted">None yet.</p>
         ) : (
           <div className="scroll">
-            <table>
+            <table className="table">
               <thead>
-                <tr><th>Week of</th><th>Deals</th><th>Sources (failed)</th><th>Generated (IST)</th></tr>
+                <tr><th>Week</th><th className="right">Deals</th><th className="right">Sources (failed)</th><th>Generated</th></tr>
               </thead>
               <tbody>
                 {briefs.map((b) => (
                   <tr key={b.id}>
-                    <td><a href={`/briefs/${b.id}`}>{dateOnly(b.week_start)}</a></td>
-                    <td>{b.deals_count}</td>
-                    <td>{b.sources_scanned} ({b.sources_failed})</td>
-                    <td>{ist(b.created_at)}</td>
+                    <td><a href={`/briefs/${b.id}`}>{weekRange(dateOnly(b.week_start))}</a></td>
+                    <td className="right num">{b.deals_count}</td>
+                    <td className="right num">{b.sources_scanned} ({b.sources_failed})</td>
+                    <td className="muted">{istDateTime(b.created_at)} IST</td>
                   </tr>
                 ))}
               </tbody>
@@ -88,6 +107,6 @@ export default async function AdminPage() {
           </div>
         )}
       </section>
-    </>
+    </main>
   );
 }

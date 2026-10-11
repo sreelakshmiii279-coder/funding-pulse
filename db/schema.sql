@@ -55,6 +55,7 @@ CREATE TABLE briefs (
   deals_count INT,
   sources_scanned INT,
   sources_failed INT,
+  data JSONB,                             -- structured brief (deals, stats, alerts) for the web page
   created_at TIMESTAMPTZ DEFAULT now()
 );
 

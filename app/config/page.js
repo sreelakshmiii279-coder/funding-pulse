@@ -40,7 +40,7 @@ export default async function ConfigPage() {
         watchlist: config.watchlist,
         portfolio: config.portfolio,
       }}
-      updatedAt={new Date(config.updated_at).toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' })}
+      updatedAt={new Date(config.updated_at).toLocaleString('en-IN', { timeZone: 'Asia/Kolkata', day: 'numeric', month: 'short', hour: 'numeric', minute: '2-digit' })}
       save={saveConfig}
     />
   );

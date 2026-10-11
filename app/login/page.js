@@ -24,15 +24,16 @@ async function login(formData) {
 export default async function LoginPage({ searchParams }) {
   const { error, next } = await searchParams;
   return (
-    <form action={login} className="card" style={{ maxWidth: 380 }}>
-      <h1 style={{ marginTop: 0, fontSize: 22 }}>Admin login</h1>
-      <input type="hidden" name="next" value={safePath(next)} />
-      <label htmlFor="pw">Password</label>
-      <input id="pw" type="password" name="password" autoFocus required />
-      {error && <p className="fail">Wrong password.</p>}
-      <p>
-        <button type="submit">Log in</button>
-      </p>
-    </form>
+    <main className="page auth">
+      <form action={login} className="card">
+        <h1 style={{ marginTop: 0, fontSize: 22 }}>Admin login</h1>
+        <p className="muted" style={{ marginTop: -6 }}>Needed for Run now and editing the config.</p>
+        <input type="hidden" name="next" value={safePath(next)} />
+        <label htmlFor="pw">Password</label>
+        <input id="pw" type="password" name="password" autoFocus required />
+        {error && <p className="fail" style={{ fontSize: 14 }}>Wrong password. Try again.</p>}
+        <button type="submit" style={{ width: '100%', marginTop: 16 }}>Log in</button>
+      </form>
+    </main>
   );
 }

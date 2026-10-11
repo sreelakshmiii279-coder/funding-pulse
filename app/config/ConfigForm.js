@@ -4,8 +4,8 @@ import { useState } from 'react';
 
 const splitList = (s) => s.split(',').map((x) => x.trim()).filter(Boolean);
 
-// A list of short text values shown as removable chips, plus an "Add" box.
-function ChipList({ label, values, onChange, placeholder }) {
+// A list of short values shown as removable chips, plus an "Add" box.
+function ChipList({ title, hint, values, onChange, placeholder }) {
   const [draft, setDraft] = useState('');
   const add = () => {
     const v = draft.trim();
@@ -14,15 +14,18 @@ function ChipList({ label, values, onChange, placeholder }) {
   };
   return (
     <section className="card">
-      <h2 style={{ marginTop: 0, fontSize: 18 }}>{label}</h2>
+      <div className="card-title">
+        <h2>{title}</h2>
+        <span className="hint">{hint}</span>
+      </div>
       <div className="chips">
         {values.map((v) => (
           <span className="chip" key={v}>
             {v}
-            <button type="button" className="link" aria-label={`Remove ${v}`} onClick={() => onChange(values.filter((x) => x !== v))}>×</button>
+            <button type="button" aria-label={`Remove ${v}`} onClick={() => onChange(values.filter((x) => x !== v))}>×</button>
           </span>
         ))}
-        {!values.length && <span className="muted">None.</span>}
+        {!values.length && <span className="muted">None yet.</span>}
       </div>
       <div className="row">
         <input
@@ -46,9 +49,10 @@ export default function ConfigForm({ initial, updatedAt, save }) {
     initial.portfolio.map((p) => ({ name: p.name, sector: p.sector, keywords: (p.keywords || []).join(', ') }))
   );
   const [status, setStatus] = useState(null);
+  const [dirty, setDirty] = useState(false);
 
-  const updateAt = (list, setList, i, field, value) =>
-    setList(list.map((x, j) => (j === i ? { ...x, [field]: value } : x)));
+  const touch = (fn) => (...args) => { setDirty(true); setStatus(null); fn(...args); };
+  const updateAt = (list, setList, i, field, value) => setList(list.map((x, j) => (j === i ? { ...x, [field]: value } : x)));
 
   async function onSave() {
     setStatus('saving');
@@ -59,73 +63,80 @@ export default function ConfigForm({ initial, updatedAt, save }) {
       portfolio: portfolio.map((p) => ({ name: p.name, sector: p.sector, keywords: splitList(p.keywords) })),
     });
     setStatus(res.ok ? 'saved' : res.error);
+    if (res.ok) setDirty(false);
   }
 
   return (
-    <div onChange={() => status === 'saved' && setStatus(null)}>
-      <div className="card">
-        <h1 style={{ marginTop: 0, fontSize: 22 }}>Config</h1>
-        <p className="muted" style={{ marginBottom: 0 }}>
-          What the Monday brief looks for. Changes apply to the next run. Last saved {updatedAt} IST.
-        </p>
+    <main className="page narrow">
+      <div className="page-head">
+        <div>
+          <h1>Config</h1>
+          <p>What the Monday brief looks for. Changes apply from the next run.</p>
+        </div>
+        <span className="pill">Last saved {updatedAt} IST</span>
       </div>
 
-      <ChipList label="Focus sectors" values={sectors} onChange={setSectors} placeholder="e.g. agritech" />
-      <ChipList label="Focus stages" values={stages} onChange={setStages} placeholder="e.g. Series B" />
+      <ChipList title="Focus sectors" hint="Ranked first in the brief" values={sectors} onChange={touch(setSectors)} placeholder="Add a sector, e.g. agritech" />
+      <ChipList title="Focus stages" hint="Combined with sectors for focus deals" values={stages} onChange={touch(setStages)} placeholder="Add a stage, e.g. Series B" />
 
       <section className="card">
-        <h2 style={{ marginTop: 0, fontSize: 18 }}>Watchlist</h2>
-        <p className="muted">Companies you want flagged at the top of the brief. Each one also gets its own Google News search.</p>
+        <div className="card-title">
+          <h2>Watchlist</h2>
+          <span className="hint">Flagged at the top · each gets its own news search</span>
+        </div>
         {watchlist.map((w, i) => (
           <div className="entry" key={i}>
             <div className="row">
               <div>
-                <label>Company name</label>
-                <input value={w.name} onChange={(e) => updateAt(watchlist, setWatchlist, i, 'name', e.target.value)} />
+                <label>Company</label>
+                <input value={w.name} placeholder="e.g. Zepto" onChange={(e) => touch(updateAt)(watchlist, setWatchlist, i, 'name', e.target.value)} />
               </div>
-              <button type="button" className="link" onClick={() => setWatchlist(watchlist.filter((_, j) => j !== i))}>Remove</button>
+              <button type="button" className="ghost" onClick={touch(() => setWatchlist(watchlist.filter((_, j) => j !== i)))}>Remove</button>
             </div>
             <div>
-              <label>Other names it appears under (comma-separated)</label>
-              <input value={w.aliases} onChange={(e) => updateAt(watchlist, setWatchlist, i, 'aliases', e.target.value)} />
+              <label>Also known as (comma-separated)</label>
+              <input value={w.aliases} placeholder="e.g. Kiranakart" onChange={(e) => touch(updateAt)(watchlist, setWatchlist, i, 'aliases', e.target.value)} />
             </div>
           </div>
         ))}
-        <button type="button" className="secondary" onClick={() => setWatchlist([...watchlist, { name: '', aliases: '' }])}>+ Add company</button>
+        <button type="button" className="secondary" onClick={touch(() => setWatchlist([...watchlist, { name: '', aliases: '' }]))}>+ Add company</button>
       </section>
 
       <section className="card">
-        <h2 style={{ marginTop: 0, fontSize: 18 }}>Portfolio</h2>
-        <p className="muted">
-          A deal is flagged as a <em>possible</em> adjacency when it is in the same sector and mentions one of the keywords.
-        </p>
+        <div className="card-title">
+          <h2>Portfolio</h2>
+          <span className="hint">Same sector + a keyword = possible adjacency</span>
+        </div>
         {portfolio.map((p, i) => (
           <div className="entry" key={i}>
             <div className="row">
               <div>
                 <label>Portfolio company</label>
-                <input value={p.name} onChange={(e) => updateAt(portfolio, setPortfolio, i, 'name', e.target.value)} />
+                <input value={p.name} onChange={(e) => touch(updateAt)(portfolio, setPortfolio, i, 'name', e.target.value)} />
               </div>
               <div>
                 <label>Sector</label>
-                <input value={p.sector} onChange={(e) => updateAt(portfolio, setPortfolio, i, 'sector', e.target.value)} />
+                <input value={p.sector} placeholder="e.g. fintech" onChange={(e) => touch(updateAt)(portfolio, setPortfolio, i, 'sector', e.target.value)} />
               </div>
-              <button type="button" className="link" onClick={() => setPortfolio(portfolio.filter((_, j) => j !== i))}>Remove</button>
+              <button type="button" className="ghost" onClick={touch(() => setPortfolio(portfolio.filter((_, j) => j !== i)))}>Remove</button>
             </div>
             <div>
               <label>Keywords (comma-separated)</label>
-              <input value={p.keywords} onChange={(e) => updateAt(portfolio, setPortfolio, i, 'keywords', e.target.value)} />
+              <input value={p.keywords} placeholder="e.g. UPI, lending" onChange={(e) => touch(updateAt)(portfolio, setPortfolio, i, 'keywords', e.target.value)} />
             </div>
           </div>
         ))}
-        <button type="button" className="secondary" onClick={() => setPortfolio([...portfolio, { name: '', sector: '', keywords: '' }])}>+ Add portfolio company</button>
+        <button type="button" className="secondary" onClick={touch(() => setPortfolio([...portfolio, { name: '', sector: '', keywords: '' }]))}>+ Add portfolio company</button>
       </section>
 
-      <div className="card" style={{ display: 'flex', gap: 14, alignItems: 'center' }}>
-        <button type="button" onClick={onSave} disabled={status === 'saving'}>{status === 'saving' ? 'Saving…' : 'Save'}</button>
-        {status === 'saved' && <span className="ok">Saved.</span>}
-        {status && status !== 'saved' && status !== 'saving' && <span className="fail">{status}</span>}
+      <div className="savebar">
+        <span className="muted" style={{ fontSize: 14 }}>
+          {status === 'saved' ? <span className="ok">✓ Saved.</span> : status && status !== 'saving' ? <span className="fail">{status}</span> : dirty ? 'You have unsaved changes.' : 'All changes saved.'}
+        </span>
+        <button type="button" onClick={onSave} disabled={status === 'saving' || !dirty}>
+          {status === 'saving' ? 'Saving…' : 'Save changes'}
+        </button>
       </div>
-    </div>
+    </main>
   );
 }

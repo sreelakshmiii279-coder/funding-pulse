@@ -16,9 +16,10 @@ export default function BriefView({ brief }) {
   const html = marked.parse(brief.content_md, { renderer });
   const created = new Date(brief.created_at).toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' });
   return (
+    <main className="page narrow">
     <article className="card brief">
       <div className="meta">
-        <span className="pill">Week of {dateOnly(brief.week_start)}</span>
+        <span className="pill accent">Week of {dateOnly(brief.week_start)}</span>
         <span className="pill">{brief.deals_count} deals</span>
         <span className="pill">
           {brief.sources_scanned} sources · {brief.sources_failed} failed
@@ -27,5 +28,6 @@ export default function BriefView({ brief }) {
       </div>
       <div dangerouslySetInnerHTML={{ __html: html }} />
     </article>
+    </main>
   );
 }
