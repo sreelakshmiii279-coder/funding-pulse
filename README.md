@@ -21,15 +21,17 @@ Triggers: Vercel cron every Monday 00:30 UTC = 06:00 IST (`vercel.json`, authent
 
 - `/`: latest brief (public).
 - `/briefs/<id>`: any past brief.
-- `/admin`: Run now, last run's per-source status, past briefs. Password: `ADMIN_PASSWORD`.
-- `/config`: sectors, stages, watchlist (+ aliases), portfolio (+ sector, keywords). Password: `ADMIN_PASSWORD`.
+- `/admin`: Run now, last run's per-source status, past briefs.
+- `/config`: sectors, stages, watchlist (+ aliases), portfolio (+ sector, keywords).
 - `/api/health`: checks the Neon connection.
+
+There is no login: `/admin` and `/config` are open by choice for this single-user demo. Only the cron's GET to `/api/run` is checked (Vercel sends `CRON_SECRET`), so opening the URL can't start a run.
 
 ## Telegram
 
 Aarav forwards LinkedIn/X funding posts to the bot; they're stored in `manual_submissions` and extracted on the next run with `origin = 'manual'`. Commands: `/start`, `/status`. Messages from any chat other than `TELEGRAM_ALLOWED_CHAT_ID` are ignored, and the webhook rejects calls without Telegram's secret-token header.
 
-After deploying, log in at `/admin`, then open `/api/telegram?setup=1` once to register the webhook (it calls Telegram `setWebhook` with this deployment's URL and the secret token). `/api/telegram` (GET, admin) shows `getWebhookInfo`.
+After deploying, register the webhook once by calling Telegram's `setWebhook` with `url = https://<your-deployment>/api/telegram` and `secret_token` = the SHA-256 hex of `telegram:<TELEGRAM_BOT_TOKEN>` (the value `webhookSecret()` in `app/api/telegram/route.js` checks).
 
 ## Setup
 

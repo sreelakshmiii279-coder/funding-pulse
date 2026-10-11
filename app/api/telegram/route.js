@@ -1,6 +1,5 @@
 import { createHash } from 'node:crypto';
 import { query } from '@/lib/db';
-import { isAdmin } from '@/lib/auth';
 
 export const dynamic = 'force-dynamic';
 
@@ -65,26 +64,4 @@ export async function POST(request) {
     await reply(chatId, 'Please send text or a link.');
   }
   return Response.json({ ok: true });
-}
-
-// GET /api/telegram?setup=1 (admin only): registers this deployment's URL as
-// the bot webhook with the secret token, so no manual setWebhook call is needed.
-export async function GET(request) {
-  if (!(await isAdmin())) return Response.json({ ok: false, error: 'Unauthorized' }, { status: 401 });
-  const url = new URL(request.url);
-  const api = `https://api.telegram.org/bot${process.env.TELEGRAM_BOT_TOKEN}`;
-  if (url.searchParams.get('setup') === '1') {
-    const res = await fetch(`${api}/setWebhook`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        url: `${url.origin}/api/telegram`,
-        secret_token: webhookSecret(),
-        allowed_updates: ['message', 'edited_message'],
-      }),
-    });
-    return Response.json(await res.json());
-  }
-  const res = await fetch(`${api}/getWebhookInfo`);
-  return Response.json(await res.json());
 }

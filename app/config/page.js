@@ -1,6 +1,4 @@
-import { redirect } from 'next/navigation';
 import { getConfig, query } from '@/lib/db';
-import { isAdmin } from '@/lib/auth';
 import ConfigForm from './ConfigForm';
 
 export const dynamic = 'force-dynamic';
@@ -11,7 +9,6 @@ const cleanList = (arr, max = 30) =>
 
 async function saveConfig(cfg) {
   'use server';
-  if (!(await isAdmin())) return { ok: false, error: 'Not logged in' };
   const sectors = cleanList(cfg.sectors);
   const stages = cleanList(cfg.stages);
   const watchlist = (cfg.watchlist || [])
@@ -30,7 +27,6 @@ async function saveConfig(cfg) {
 }
 
 export default async function ConfigPage() {
-  if (!(await isAdmin())) redirect('/login?next=/config');
   const config = await getConfig();
   return (
     <ConfigForm
