@@ -1,4 +1,6 @@
+import { redirect } from 'next/navigation';
 import { query, dateOnly } from '@/lib/db';
+import { isAdmin } from '@/lib/auth';
 import RunNow from './RunNow';
 
 export const dynamic = 'force-dynamic';
@@ -6,6 +8,8 @@ export const dynamic = 'force-dynamic';
 const ist = (d) => (d ? new Date(d).toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' }) : '-');
 
 export default async function AdminPage() {
+  if (!(await isAdmin())) redirect('/login?next=/admin');
+
   const [lastRun] = await query('SELECT * FROM runs ORDER BY started_at DESC LIMIT 1');
   const briefs = await query(
     'SELECT id, week_start, deals_count, sources_scanned, sources_failed, created_at FROM briefs ORDER BY created_at DESC LIMIT 30'
