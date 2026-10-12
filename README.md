@@ -22,6 +22,10 @@ A Monday-morning brief of last week's Indian startup funding rounds for Aarav, a
 
 **Stack:** Next.js (App Router) on Vercel · Neon Postgres · Gemini Flash (all AI, incl. Google Search grounding) · RSS + Google News RSS + GDELT · Frankfurter (live INR/USD) · Resend · Telegram Bot API.
 
+## Components map
+
+[docs/components-map-v3.svg](docs/components-map-v3.svg) is the current map (v3). The original planning map (v2) is kept at [docs/components-map-v2-original.svg](docs/components-map-v2-original.svg).
+
 ## External APIs
 
 | API | Used for | Key |

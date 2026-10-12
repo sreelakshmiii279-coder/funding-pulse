@@ -1,0 +1,122 @@
+<svg width="100%" viewBox="0 0 680 892" role="img" xmlns="http://www.w3.org/2000/svg">
+<title>Components map v3 for Aarav's startup funding pulse</title>
+<desc>Swimlane grid with eleven actors and six stages. Aarav forwards LinkedIn and X posts to a Telegram bot and edits his config; both are stored in Neon Postgres with four weeks of deal history. A Monday 6 AM IST Vercel cron pulls the last 7 days of news from RSS, Google News and GDELT. Gemini Flash filters, extracts and dedupes deals using Neon data and a live rupee-dollar rate from Frankfurter, and saves them back to Neon. Gemini with Google Search fact-checks focus deals, a code-only analysis engine computes watchlist matches, sector trends and new investors, and a second Gemini Flash step writes the brief. Aarav reviews the brief on the website and by email and decides what to act on.</desc>
+<rect width="680" height="892" fill="rgb(255, 255, 255)"/>
+<defs><marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<rect x="20" y="20" width="628" height="32" rx="4" style="fill:rgb(252, 252, 251);stroke:rgba(11,11,11,0.2);stroke-width:0.5px"/>
+<text x="70" y="36" text-anchor="middle" dominant-baseline="central" style="fill:rgb(11, 11, 11);font-family:anthropic-sans, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;font-size:14px;font-weight:500">Actor</text>
+<text x="164" y="36" text-anchor="middle" dominant-baseline="central" style="fill:rgb(11, 11, 11);font-family:anthropic-sans, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;font-size:14px;font-weight:500">Trigger</text>
+<text x="252" y="36" text-anchor="middle" dominant-baseline="central" style="fill:rgb(11, 11, 11);font-family:anthropic-sans, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;font-size:14px;font-weight:500">Input</text>
+<text x="340" y="36" text-anchor="middle" dominant-baseline="central" style="fill:rgb(11, 11, 11);font-family:anthropic-sans, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;font-size:14px;font-weight:500">Context</text>
+<text x="428" y="36" text-anchor="middle" dominant-baseline="central" style="fill:rgb(11, 11, 11);font-family:anthropic-sans, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;font-size:14px;font-weight:500">Processing</text>
+<text x="516" y="36" text-anchor="middle" dominant-baseline="central" style="fill:rgb(11, 11, 11);font-family:anthropic-sans, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;font-size:14px;font-weight:500">AI</text>
+<text x="604" y="36" text-anchor="middle" dominant-baseline="central" style="fill:rgb(11, 11, 11);font-family:anthropic-sans, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;font-size:14px;font-weight:500">Output</text>
+<rect x="20" y="52" width="628" height="792" style="fill:none;stroke:rgba(11,11,11,0.2);stroke-width:0.5px"/>
+<line x1="120" y1="52" x2="120" y2="844" style="stroke:rgba(11,11,11,0.2);stroke-width:0.5px"/>
+<line x1="208" y1="52" x2="208" y2="844" style="stroke:rgba(11,11,11,0.2);stroke-width:0.5px"/>
+<line x1="296" y1="52" x2="296" y2="844" style="stroke:rgba(11,11,11,0.2);stroke-width:0.5px"/>
+<line x1="384" y1="52" x2="384" y2="844" style="stroke:rgba(11,11,11,0.2);stroke-width:0.5px"/>
+<line x1="472" y1="52" x2="472" y2="844" style="stroke:rgba(11,11,11,0.2);stroke-width:0.5px"/>
+<line x1="560" y1="52" x2="560" y2="844" style="stroke:rgba(11,11,11,0.2);stroke-width:0.5px"/>
+<text x="70" y="80" text-anchor="middle" dominant-baseline="central" style="fill:rgb(11, 11, 11);font-family:anthropic-sans, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;font-size:14px;font-weight:500">Aarav</text>
+<text x="70" y="98" text-anchor="middle" dominant-baseline="central" style="fill:rgb(82, 81, 78);font-family:anthropic-sans, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;font-size:12px;font-weight:400">Venture scout</text>
+<line x1="20" y1="124" x2="648" y2="124" style="stroke:rgba(11,11,11,0.2);stroke-width:0.5px"/>
+<text x="70" y="152" text-anchor="middle" dominant-baseline="central" style="fill:rgb(11, 11, 11);font-family:anthropic-sans, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;font-size:14px;font-weight:500">Telegram bot</text>
+<text x="70" y="170" text-anchor="middle" dominant-baseline="central" style="fill:rgb(82, 81, 78);font-family:anthropic-sans, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;font-size:12px;font-weight:400">Manual capture</text>
+<line x1="20" y1="196" x2="648" y2="196" style="stroke:rgba(11,11,11,0.2);stroke-width:0.5px"/>
+<text x="70" y="224" text-anchor="middle" dominant-baseline="central" style="fill:rgb(11, 11, 11);font-family:anthropic-sans, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;font-size:14px;font-weight:500">Neon</text>
+<text x="70" y="242" text-anchor="middle" dominant-baseline="central" style="fill:rgb(82, 81, 78);font-family:anthropic-sans, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;font-size:12px;font-weight:400">Postgres memory</text>
+<line x1="20" y1="268" x2="648" y2="268" style="stroke:rgba(11,11,11,0.2);stroke-width:0.5px"/>
+<text x="70" y="296" text-anchor="middle" dominant-baseline="central" style="fill:rgb(11, 11, 11);font-family:anthropic-sans, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;font-size:14px;font-weight:500">Vercel cron</text>
+<text x="70" y="314" text-anchor="middle" dominant-baseline="central" style="fill:rgb(82, 81, 78);font-family:anthropic-sans, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;font-size:12px;font-weight:400">Scheduler</text>
+<line x1="20" y1="340" x2="648" y2="340" style="stroke:rgba(11,11,11,0.2);stroke-width:0.5px"/>
+<text x="70" y="368" text-anchor="middle" dominant-baseline="central" style="fill:rgb(11, 11, 11);font-family:anthropic-sans, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;font-size:14px;font-weight:500">News sources</text>
+<text x="70" y="386" text-anchor="middle" dominant-baseline="central" style="fill:rgb(82, 81, 78);font-family:anthropic-sans, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;font-size:12px;font-weight:400">RSS · Google · GDELT</text>
+<line x1="20" y1="412" x2="648" y2="412" style="stroke:rgba(11,11,11,0.2);stroke-width:0.5px"/>
+<text x="70" y="440" text-anchor="middle" dominant-baseline="central" style="fill:rgb(11, 11, 11);font-family:anthropic-sans, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;font-size:14px;font-weight:500">Frankfurter</text>
+<text x="70" y="458" text-anchor="middle" dominant-baseline="central" style="fill:rgb(82, 81, 78);font-family:anthropic-sans, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;font-size:12px;font-weight:400">Live FX rates</text>
+<line x1="20" y1="484" x2="648" y2="484" style="stroke:rgba(11,11,11,0.2);stroke-width:0.5px"/>
+<text x="70" y="512" text-anchor="middle" dominant-baseline="central" style="fill:rgb(11, 11, 11);font-family:anthropic-sans, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;font-size:14px;font-weight:500">Gemini Flash</text>
+<text x="70" y="530" text-anchor="middle" dominant-baseline="central" style="fill:rgb(82, 81, 78);font-family:anthropic-sans, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;font-size:12px;font-weight:400">Extraction</text>
+<line x1="20" y1="556" x2="648" y2="556" style="stroke:rgba(11,11,11,0.2);stroke-width:0.5px"/>
+<text x="70" y="584" text-anchor="middle" dominant-baseline="central" style="fill:rgb(11, 11, 11);font-family:anthropic-sans, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;font-size:14px;font-weight:500">Gemini + Search</text>
+<text x="70" y="602" text-anchor="middle" dominant-baseline="central" style="fill:rgb(82, 81, 78);font-family:anthropic-sans, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;font-size:12px;font-weight:400">Fact-check</text>
+<line x1="20" y1="628" x2="648" y2="628" style="stroke:rgba(11,11,11,0.2);stroke-width:0.5px"/>
+<text x="70" y="656" text-anchor="middle" dominant-baseline="central" style="fill:rgb(11, 11, 11);font-family:anthropic-sans, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;font-size:14px;font-weight:500">Analysis engine</text>
+<text x="70" y="674" text-anchor="middle" dominant-baseline="central" style="fill:rgb(82, 81, 78);font-family:anthropic-sans, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;font-size:12px;font-weight:400">Code, no AI</text>
+<line x1="20" y1="700" x2="648" y2="700" style="stroke:rgba(11,11,11,0.2);stroke-width:0.5px"/>
+<text x="70" y="728" text-anchor="middle" dominant-baseline="central" style="fill:rgb(11, 11, 11);font-family:anthropic-sans, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;font-size:14px;font-weight:500">Gemini Flash</text>
+<text x="70" y="746" text-anchor="middle" dominant-baseline="central" style="fill:rgb(82, 81, 78);font-family:anthropic-sans, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;font-size:12px;font-weight:400">Brief writer</text>
+<line x1="20" y1="772" x2="648" y2="772" style="stroke:rgba(11,11,11,0.2);stroke-width:0.5px"/>
+<text x="70" y="800" text-anchor="middle" dominant-baseline="central" style="fill:rgb(11, 11, 11);font-family:anthropic-sans, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;font-size:14px;font-weight:500">Review gate</text>
+<text x="70" y="818" text-anchor="middle" dominant-baseline="central" style="fill:rgb(82, 81, 78);font-family:anthropic-sans, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;font-size:12px;font-weight:400">Aarav</text>
+<rect x="122" y="774" width="524" height="68" style="fill:none;stroke:rgb(186, 117, 23);stroke-width:1px;stroke-dasharray:5px, 4px"/>
+<path d="M252 116 L252 130" fill="none" marker-end="url(#arrow)" style="stroke:rgb(137, 135, 129);stroke-width:1.5px;"/>
+<path d="M291 160 L320 160 L320 202" fill="none" marker-end="url(#arrow)" style="stroke:rgb(137, 135, 129);stroke-width:1.5px;"/>
+<path d="M355 116 L355 202" fill="none" marker-end="url(#arrow)" style="stroke:rgb(137, 135, 129);stroke-width:1.5px;"/>
+<path d="M203 304 L252 304 L252 346" fill="none" marker-end="url(#arrow)" style="stroke:rgb(137, 135, 129);stroke-width:1.5px;"/>
+<path d="M379 222 L448 222 L448 490" fill="none" marker-end="url(#arrow)" style="stroke:rgb(137, 135, 129);stroke-width:1.5px;"/>
+<path d="M291 376 L400 376 L400 490" fill="none" marker-end="url(#arrow)" style="stroke:rgb(137, 135, 129);stroke-width:1.5px;"/>
+<path d="M379 448 L416 448 L416 490" fill="none" marker-end="url(#arrow)" style="stroke:rgb(137, 135, 129);stroke-width:1.5px;"/>
+<path d="M432 492 L432 246 L382 246" fill="none" marker-end="url(#arrow)" style="stroke:rgb(29, 158, 117);stroke-width:1.5px;stroke-dasharray:4px, 3px;"/>
+<path d="M467 520 L496 520 L496 562" fill="none" marker-end="url(#arrow)" style="stroke:rgb(137, 135, 129);stroke-width:1.5px;"/>
+<path d="M428 548 L428 634" fill="none" marker-end="url(#arrow)" style="stroke:rgb(137, 135, 129);stroke-width:1.5px;"/>
+<path d="M516 620 L516 706" fill="none" marker-end="url(#arrow)" style="stroke:rgb(137, 135, 129);stroke-width:1.5px;"/>
+<path d="M467 664 L486 664 L486 706" fill="none" marker-end="url(#arrow)" style="stroke:rgb(137, 135, 129);stroke-width:1.5px;"/>
+<path d="M555 736 L604 736 L604 778" fill="none" marker-end="url(#arrow)" style="stroke:rgb(137, 135, 129);stroke-width:1.5px;"/>
+<rect x="213" y="60" width="78" height="56" rx="6" style="fill:rgb(250, 238, 218);stroke:rgb(133, 79, 11);stroke-width:0.5px"/>
+<text x="252" y="74" text-anchor="middle" dominant-baseline="central" style="fill:rgb(133, 79, 11);font-family:anthropic-sans, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;font-size:12px;font-weight:400">Forwards</text>
+<text x="252" y="88" text-anchor="middle" dominant-baseline="central" style="fill:rgb(133, 79, 11);font-family:anthropic-sans, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;font-size:12px;font-weight:400">LinkedIn/X</text>
+<text x="252" y="102" text-anchor="middle" dominant-baseline="central" style="fill:rgb(133, 79, 11);font-family:anthropic-sans, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;font-size:12px;font-weight:400">posts</text>
+<rect x="301" y="60" width="78" height="56" rx="6" style="fill:rgb(250, 238, 218);stroke:rgb(133, 79, 11);stroke-width:0.5px"/>
+<text x="340" y="74" text-anchor="middle" dominant-baseline="central" style="fill:rgb(133, 79, 11);font-family:anthropic-sans, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;font-size:12px;font-weight:400">Updates</text>
+<text x="340" y="88" text-anchor="middle" dominant-baseline="central" style="fill:rgb(133, 79, 11);font-family:anthropic-sans, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;font-size:12px;font-weight:400">his config</text>
+<text x="340" y="102" text-anchor="middle" dominant-baseline="central" style="fill:rgb(133, 79, 11);font-family:anthropic-sans, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;font-size:12px;font-weight:400">anytime</text>
+<rect x="213" y="132" width="78" height="56" rx="6" style="fill:rgb(238, 237, 254);stroke:rgb(83, 74, 183);stroke-width:0.5px"/>
+<text x="252" y="146" text-anchor="middle" dominant-baseline="central" style="fill:rgb(83, 74, 183);font-family:anthropic-sans, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;font-size:12px;font-weight:400">Stores</text>
+<text x="252" y="160" text-anchor="middle" dominant-baseline="central" style="fill:rgb(83, 74, 183);font-family:anthropic-sans, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;font-size:12px;font-weight:400">manual</text>
+<text x="252" y="174" text-anchor="middle" dominant-baseline="central" style="fill:rgb(83, 74, 183);font-family:anthropic-sans, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;font-size:12px;font-weight:400">submissions</text>
+<rect x="301" y="204" width="78" height="56" rx="6" style="fill:rgb(238, 237, 254);stroke:rgb(83, 74, 183);stroke-width:0.5px"/>
+<text x="340" y="218" text-anchor="middle" dominant-baseline="central" style="fill:rgb(83, 74, 183);font-family:anthropic-sans, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;font-size:12px;font-weight:400">Config, deals,</text>
+<text x="340" y="232" text-anchor="middle" dominant-baseline="central" style="fill:rgb(83, 74, 183);font-family:anthropic-sans, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;font-size:12px;font-weight:400">4 weeks of</text>
+<text x="340" y="246" text-anchor="middle" dominant-baseline="central" style="fill:rgb(83, 74, 183);font-family:anthropic-sans, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;font-size:12px;font-weight:400">history</text>
+<rect x="125" y="276" width="78" height="56" rx="6" style="fill:rgb(238, 237, 254);stroke:rgb(83, 74, 183);stroke-width:0.5px"/>
+<text x="164" y="297" text-anchor="middle" dominant-baseline="central" style="fill:rgb(83, 74, 183);font-family:anthropic-sans, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;font-size:12px;font-weight:400">Monday</text>
+<text x="164" y="311" text-anchor="middle" dominant-baseline="central" style="fill:rgb(83, 74, 183);font-family:anthropic-sans, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;font-size:12px;font-weight:400">6:00 AM IST</text>
+<rect x="213" y="348" width="78" height="56" rx="6" style="fill:rgb(238, 237, 254);stroke:rgb(83, 74, 183);stroke-width:0.5px"/>
+<text x="252" y="362" text-anchor="middle" dominant-baseline="central" style="fill:rgb(83, 74, 183);font-family:anthropic-sans, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;font-size:12px;font-weight:400">Last 7 days</text>
+<text x="252" y="376" text-anchor="middle" dominant-baseline="central" style="fill:rgb(83, 74, 183);font-family:anthropic-sans, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;font-size:12px;font-weight:400">of funding</text>
+<text x="252" y="390" text-anchor="middle" dominant-baseline="central" style="fill:rgb(83, 74, 183);font-family:anthropic-sans, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;font-size:12px;font-weight:400">news</text>
+<rect x="301" y="420" width="78" height="56" rx="6" style="fill:rgb(238, 237, 254);stroke:rgb(83, 74, 183);stroke-width:0.5px"/>
+<text x="340" y="434" text-anchor="middle" dominant-baseline="central" style="fill:rgb(83, 74, 183);font-family:anthropic-sans, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;font-size:12px;font-weight:400">₹/$ rate</text>
+<text x="340" y="448" text-anchor="middle" dominant-baseline="central" style="fill:rgb(83, 74, 183);font-family:anthropic-sans, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;font-size:12px;font-weight:400">for the</text>
+<text x="340" y="462" text-anchor="middle" dominant-baseline="central" style="fill:rgb(83, 74, 183);font-family:anthropic-sans, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;font-size:12px;font-weight:400">week</text>
+<rect x="389" y="492" width="78" height="56" rx="6" style="fill:rgb(238, 237, 254);stroke:rgb(83, 74, 183);stroke-width:0.5px"/>
+<text x="428" y="506" text-anchor="middle" dominant-baseline="central" style="fill:rgb(83, 74, 183);font-family:anthropic-sans, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;font-size:12px;font-weight:400">Filter,</text>
+<text x="428" y="520" text-anchor="middle" dominant-baseline="central" style="fill:rgb(83, 74, 183);font-family:anthropic-sans, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;font-size:12px;font-weight:400">extract,</text>
+<text x="428" y="534" text-anchor="middle" dominant-baseline="central" style="fill:rgb(83, 74, 183);font-family:anthropic-sans, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;font-size:12px;font-weight:400">dedupe</text>
+<rect x="477" y="564" width="78" height="56" rx="6" style="fill:rgb(238, 237, 254);stroke:rgb(83, 74, 183);stroke-width:0.5px"/>
+<text x="516" y="578" text-anchor="middle" dominant-baseline="central" style="fill:rgb(83, 74, 183);font-family:anthropic-sans, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;font-size:12px;font-weight:400">Verify focus</text>
+<text x="516" y="592" text-anchor="middle" dominant-baseline="central" style="fill:rgb(83, 74, 183);font-family:anthropic-sans, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;font-size:12px;font-weight:400">deals, cite</text>
+<text x="516" y="606" text-anchor="middle" dominant-baseline="central" style="fill:rgb(83, 74, 183);font-family:anthropic-sans, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;font-size:12px;font-weight:400">sources</text>
+<rect x="389" y="636" width="78" height="56" rx="6" style="fill:rgb(238, 237, 254);stroke:rgb(83, 74, 183);stroke-width:0.5px"/>
+<text x="428" y="650" text-anchor="middle" dominant-baseline="central" style="fill:rgb(83, 74, 183);font-family:anthropic-sans, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;font-size:12px;font-weight:400">Watchlist,</text>
+<text x="428" y="664" text-anchor="middle" dominant-baseline="central" style="fill:rgb(83, 74, 183);font-family:anthropic-sans, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;font-size:12px;font-weight:400">trends, new</text>
+<text x="428" y="678" text-anchor="middle" dominant-baseline="central" style="fill:rgb(83, 74, 183);font-family:anthropic-sans, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;font-size:12px;font-weight:400">investors</text>
+<rect x="477" y="708" width="78" height="56" rx="6" style="fill:rgb(238, 237, 254);stroke:rgb(83, 74, 183);stroke-width:0.5px"/>
+<text x="516" y="722" text-anchor="middle" dominant-baseline="central" style="fill:rgb(83, 74, 183);font-family:anthropic-sans, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;font-size:12px;font-weight:400">Summary,</text>
+<text x="516" y="736" text-anchor="middle" dominant-baseline="central" style="fill:rgb(83, 74, 183);font-family:anthropic-sans, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;font-size:12px;font-weight:400">patterns</text>
+<text x="516" y="750" text-anchor="middle" dominant-baseline="central" style="fill:rgb(83, 74, 183);font-family:anthropic-sans, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;font-size:12px;font-weight:400">(cites counts)</text>
+<rect x="565" y="780" width="78" height="56" rx="6" style="fill:rgb(250, 238, 218);stroke:rgb(133, 79, 11);stroke-width:0.5px"/>
+<text x="604" y="794" text-anchor="middle" dominant-baseline="central" style="fill:rgb(133, 79, 11);font-family:anthropic-sans, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;font-size:12px;font-weight:400">Brief on site</text>
+<text x="604" y="808" text-anchor="middle" dominant-baseline="central" style="fill:rgb(133, 79, 11);font-family:anthropic-sans, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;font-size:12px;font-weight:400">+ email,</text>
+<text x="604" y="822" text-anchor="middle" dominant-baseline="central" style="fill:rgb(133, 79, 11);font-family:anthropic-sans, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;font-size:12px;font-weight:400">Aarav acts</text>
+<rect x="40" y="862" width="12" height="12" rx="2" style="fill:rgb(238, 237, 254);stroke:rgb(83, 74, 183);stroke-width:0.5px"/>
+<text x="58" y="868" dominant-baseline="central" style="fill:rgb(82, 81, 78);font-family:anthropic-sans, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;font-size:12px">Automated</text>
+<rect x="140" y="862" width="12" height="12" rx="2" style="fill:rgb(250, 238, 218);stroke:rgb(133, 79, 11);stroke-width:0.5px"/>
+<text x="158" y="868" dominant-baseline="central" style="fill:rgb(82, 81, 78);font-family:anthropic-sans, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;font-size:12px">Human (Aarav)</text>
+<line x1="262" y1="868" x2="290" y2="868" style="stroke:rgb(29, 158, 117);stroke-width:1.5px;stroke-dasharray:4px, 3px"/>
+<text x="298" y="868" dominant-baseline="central" style="fill:rgb(82, 81, 78);font-family:anthropic-sans, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;font-size:12px">Saves deals to memory</text>
+<rect x="452" y="862" width="18" height="12" style="fill:none;stroke:rgb(186, 117, 23);stroke-width:1px;stroke-dasharray:4px, 3px"/>
+<text x="476" y="868" dominant-baseline="central" style="fill:rgb(82, 81, 78);font-family:anthropic-sans, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;font-size:12px">Human review gate</text>
+</svg>
