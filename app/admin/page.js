@@ -68,7 +68,7 @@ export default async function AdminPage() {
                   {sources.map((s) => (
                     <tr key={s.name}>
                       <td>{s.name.replace(/^GN: /, '')}</td>
-                      <td className="muted">{s.origin === 'rss' ? 'RSS feed' : 'Google News'}</td>
+                      <td className="muted">{{ rss: 'RSS feed', google_news: 'Google News', gdelt: 'GDELT index' }[s.origin] || s.origin}</td>
                       <td title={s.error || ''}>
                         <span className={s.ok ? 'ok' : 'fail'}><span className="dot" /> {s.ok ? 'OK' : 'Failed'}</span>
                       </td>

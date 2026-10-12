@@ -21,5 +21,6 @@ export default async function Home() {
       </main>
     );
   }
-  return brief.data ? <BriefDashboard brief={brief} config={config} /> : <BriefView brief={brief} />;
+  const [{ issue }] = await query('SELECT count(DISTINCT week_start)::int AS issue FROM briefs WHERE week_start <= $1', [brief.week_start]);
+  return brief.data ? <BriefDashboard brief={brief} config={config} issue={issue} /> : <BriefView brief={brief} />;
 }

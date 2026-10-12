@@ -21,6 +21,31 @@ export function SourceLink({ d }) {
   );
 }
 
+// Result of the Gemini + Google Search fact-check, with the pages it used.
+function VerifyBadge({ d }) {
+  // Only positive results and real warnings get a badge; unchecked or
+  // not-found deals stay clean (the source link is always there).
+  const label = { verified: '✓ Verified', mismatch: '⚠ Check amount' }[d.verify_status];
+  if (!label) return null;
+  const sources = Array.isArray(d.verify_sources) ? d.verify_sources : [];
+  return (
+    <details className={`vbadge ${d.verify_status}`}>
+      <summary title="Fact-checked with Gemini + Google Search">{label}</summary>
+      <div className="pop">
+        <strong>Gemini + Google Search fact-check</strong>
+        {d.verify_note && <div style={{ marginTop: 4 }}>{d.verify_note}</div>}
+        {sources.length > 0 && (
+          <ul>
+            {sources.map((s, i) => (
+              <li key={i}><a href={s.uri} target="_blank" rel="noopener noreferrer">{s.title}</a></li>
+            ))}
+          </ul>
+        )}
+      </div>
+    </details>
+  );
+}
+
 export default function DealTable({ deals, colorOf = () => 'var(--c-other)' }) {
   return (
     <div className="table-wrap">
@@ -39,7 +64,8 @@ export default function DealTable({ deals, colorOf = () => 'var(--c-other)' }) {
             <tr key={`${d.company}-${i}`} style={{ '--tone': colorOf(d.sector) }}>
               <td className="c-company">
                 <div className="company">
-                  {d.company} {d.origin === 'manual' && <span className="pill accent">manual</span>}
+                  {d.company} {d.origin === 'manual' && <span className="pill accent">via Telegram</span>}
+                  <VerifyBadge d={d} />
                 </div>
                 {d.headline && <div className="headline">{d.headline}</div>}
               </td>

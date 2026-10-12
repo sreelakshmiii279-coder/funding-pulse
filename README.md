@@ -20,7 +20,19 @@ A Monday-morning brief of last week's Indian startup funding rounds for Aarav, a
 | Config he updates himself | `/config` |
 | Adjacent companies raising (the board-meeting miss) | “Possible adjacency”: same sector as a portfolio company + keyword match |
 
-**Stack:** Next.js (App Router) on Vercel · Neon Postgres · Gemini Flash (all AI) · RSS + Google News RSS · Resend · Telegram Bot API.
+**Stack:** Next.js (App Router) on Vercel · Neon Postgres · Gemini Flash (all AI, incl. Google Search grounding) · RSS + Google News RSS + GDELT · Frankfurter (live INR/USD) · Resend · Telegram Bot API.
+
+## External APIs
+
+| API | Used for | Key |
+|---|---|---|
+| Gemini API (Flash) | Extracting deals, writing the brief, fact-checking focus deals with Google Search grounding | `GEMINI_API_KEY` |
+| Neon Postgres | Config, deals, forwards, briefs, run log | `DATABASE_URL` |
+| Resend | Emailing the brief to Aarav only | `RESEND_API_KEY` |
+| Telegram Bot API | Aarav forwards LinkedIn/X posts | `TELEGRAM_BOT_TOKEN` |
+| Publisher RSS + Google News RSS | Live news | none (public) |
+| GDELT DOC 2.0 | Extra news index across thousands of outlets (one request per run; optional, failure is non-fatal) | none (public) |
+| Frankfurter | Live INR/USD rate per week (ECB reference rates), replacing a fixed ₹88 | none (public) |
 
 ## How a run works (`/api/run`)
 
@@ -28,6 +40,7 @@ A Monday-morning brief of last week's Indian startup funding rounds for Aarav, a
 |---|---|---|
 | 1. Collect | `lib/collect.js`, `lib/sources.js` | 12 verified RSS feeds + Google News queries generated from the config (one per sector, one per watchlist company, two generic) + unprocessed Telegram forwards. Fetched in parallel with a 10 s timeout each; a failed feed is counted, never fatal. Last 7 days only; deduped by URL and near-identical title. |
 | 2. Pre-filter | `lib/collect.js` | Code-only keyword filter: title must have a funding action word (raises, secures, round, led by…). Cuts ~450 items to ~170. |
+| 3b. Fact-check | `lib/verify.js` | Gemini Flash + Google Search grounding checks up to 12 focus-sector deals per run. “Verified” only when the search returned web sources that agree; fills blank fields only, never overwrites; flags amount mismatches. Skips cleanly when the free search quota is used up. |
 | 3. Extract | `lib/extract.js` | Gemini Flash, JSON mode with a response schema, 20 items per call, 3 calls at a time. Only stated facts; null otherwise; India-based only. Source URL is taken from the feed item, never from the model. Code then merges the same round from several outlets and inserts with `ON CONFLICT DO NOTHING`. |
 | 4. Match + compute | `lib/match.js`, `lib/investors.js` | Code only: watchlist name/alias match, possible portfolio adjacency (same sector + keyword), stats by sector/stage, focus ranking. Once ≥3 prior weeks exist: each focus/portfolio sector vs its 4-week average with a direction label (up = ≥1.5× and +2 deals, down = ≤0.5× and −2), and investors appearing in a focus sector for the first time in stored history. |
 | 5. Write | `lib/brief.js` | Gemini Flash writes the summary, alert notes and 3–5 pattern bullets. Code renders every deal line and link, drops any pattern without a number, and drops trend words unless the code labelled that sector up/down. |

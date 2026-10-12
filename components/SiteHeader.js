@@ -21,8 +21,8 @@ export default function SiteHeader() {
             </svg>
           </span>
           <span>
-            Funding Pulse
-            <small>Indian startup funding, weekly</small>
+            <span className="brand-name">Funding Pulse</span>
+            <small>Indian startup funding intelligence</small>
           </span>
         </a>
         <nav className="nav-links">

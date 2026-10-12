@@ -33,7 +33,12 @@ CREATE TABLE deals (
   source_name TEXT,
   source_url TEXT NOT NULL,
   announced_on DATE,
-  origin TEXT NOT NULL DEFAULT 'rss',     -- 'rss' | 'google_news' | 'manual'
+  origin TEXT NOT NULL DEFAULT 'rss',     -- 'rss' | 'google_news' | 'gdelt' | 'manual'
+  fx_inr_per_usd NUMERIC,                 -- exchange rate used for amount_usd_m (Frankfurter)
+  verify_status TEXT,                     -- 'verified' | 'mismatch' | 'unconfirmed' (Gemini + Google Search)
+  verify_note TEXT,
+  verify_sources JSONB,                   -- [{ "title", "uri" }] web pages Gemini's search used
+  verified_at TIMESTAMPTZ,
   created_at TIMESTAMPTZ DEFAULT now(),
   UNIQUE (company_key, stage, week_start)
 );
